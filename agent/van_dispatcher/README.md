@@ -54,8 +54,32 @@ pnpm install
 # Install agent dependencies
 cd agent
 pip install -r requirements.txt
-# OR if using poetry
+```
+
+#### For Poetry Users
+
+```bash
+cd ~/repos/mcp-client/agent
+# For macOS users (especially Apple Silicon/M1/M2/M3)
+poetry config virtualenvs.create true
+poetry config virtualenvs.in-project true
+poetry install
+
+# Then add the required packages
 poetry add fastapi uvicorn python-dotenv langchain-openai langchain-core langgraph langserve pydantic typing-extensions langchain-mcp-adapters
+```
+
+#### For Apple Silicon Mac Users (M1/M2/M3)
+
+If you encounter architecture compatibility issues on Apple Silicon Macs, try:
+
+```bash
+# Ensure you're using the arm64 architecture
+ARCHFLAGS="-arch arm64" pip install -r requirements.txt
+
+# OR with poetry
+ARCHFLAGS="-arch arm64" poetry install
+ARCHFLAGS="-arch arm64" poetry add fastapi uvicorn python-dotenv langchain-openai langchain-core langgraph langserve pydantic typing-extensions langchain-mcp-adapters
 ```
 
 ## Testing Instructions
