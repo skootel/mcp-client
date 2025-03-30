@@ -1,0 +1,12 @@
+{
+  "vans": [
+    {
+      "id": "1",
+      "name": "van-1",
+      "status": "available",
+      "last_updated": "2025-03-29T23:56:00",
+      "channel_id": "C077HFJR54Z",
+      "notes": "Status from message: Van en rotación"
+    }
+  ]
+}

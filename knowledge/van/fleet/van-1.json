@@ -1,0 +1,9 @@
+{
+  "id": "1",
+  "name": "van-1",
+  "status": "available",
+  "slack_channel_id": "C077HFJR54Z",
+  "capacity": 50,
+  "region": "metro",
+  "timestamp": "2025-03-28T09:15:00"
+}
