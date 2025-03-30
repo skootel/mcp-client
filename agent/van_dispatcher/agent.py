@@ -1,5 +1,6 @@
 """
-Van Dispatcher Agent using MCP servers.
+This is the main entry point for the van dispatcher agent.
+It defines the workflow graph, state, tools, nodes and edges.
 This agent connects to Slack, Browserbase, Memory, and SequentialThinking MCP servers
 to manage van status and dispatch operations.
 """
@@ -19,21 +20,25 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, Field
 
-class StdioConnection(TypedDict, total=False):
+class StdioConnection(TypedDict):
     command: str
     args: List[str]
     transport: Literal["stdio"]
-    env: Dict[str, str]
+    env: Optional[Dict[str, str]]
 
 class SSEConnection(TypedDict):
     url: str
     transport: Literal["sse"]
 
-MCPConfig = Dict[str, Union[StdioConnection, SSEConnection]]
+MCPConfig = Dict[str, Union[StdioConnection, SSEConnection, Dict[str, Any]]]
 
 class AgentState(CopilotKitState):
     """
-    State for the van dispatcher agent.
+    Here we define the state of the agent
+    
+    In this instance, we're inheriting from CopilotKitState, which will bring in
+    the CopilotKitState fields. We're also adding a custom field, `mcp_config`,
+    which will be used to configure MCP services for the agent.
     """
     mcp_config: Optional[MCPConfig]
 
@@ -114,11 +119,12 @@ DEFAULT_MCP_CONFIG: MCPConfig = {
 
 async def chat_node(state: AgentState, config: RunnableConfig) -> Command[Literal["__end__"]]:
     """
-    Main chat node for the van dispatcher agent.
+    This is a simplified agent that uses the ReAct agent as a subgraph.
+    It handles both chat responses and tool execution in one node.
     """
     mcp_config = state.get("mcp_config", DEFAULT_MCP_CONFIG)
     
-    print(f"Using MCP configuration: {mcp_config}")
+    print(f"mcp_config: {mcp_config}, default: {DEFAULT_MCP_CONFIG}")
     
     async with MultiServerMCPClient(mcp_config) as mcp_client:
         mcp_tools = mcp_client.get_tools()
