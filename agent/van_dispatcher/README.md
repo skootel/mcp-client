@@ -53,7 +53,9 @@ pnpm install
 
 # Install agent dependencies
 cd agent
-poetry install
+pip install -r requirements.txt
+# OR if using poetry
+poetry add fastapi uvicorn python-dotenv langchain-openai langchain-core langgraph langserve pydantic typing-extensions langchain-mcp-adapters
 ```
 
 ## Testing Instructions
@@ -69,6 +71,8 @@ pnpm run dev-frontend
 
 # Terminal 2 - Agent
 cd ~/repos/mcp-client/agent
+python main.py
+# OR if using poetry
 poetry run python main.py
 ```
 
@@ -99,15 +103,22 @@ The repository includes sample van data in `knowledge/van/fleet/van-1.json`. You
 
 ### Common Issues
 
-1. **MCP Server Connection Errors**:
+1. **Missing Dependencies**:
+   - If you encounter a `ModuleNotFoundError`, make sure to install all required dependencies:
+     ```bash
+     pip install -r requirements.txt
+     ```
+   - Key dependencies include: fastapi, uvicorn, langserve, langgraph, and langchain-mcp-adapters
+
+2. **MCP Server Connection Errors**:
    - Verify that the environment variables are set correctly
    - Check that the MCP servers are installed and accessible
 
-2. **Slack API Errors**:
+3. **Slack API Errors**:
    - Ensure the Slack bot token has the necessary permissions
    - Verify that the Slack team ID is correct
 
-3. **Agent Not Responding**:
+4. **Agent Not Responding**:
    - Check the agent logs for any errors
    - Verify that the OpenAI API key is valid
 
